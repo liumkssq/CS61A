@@ -54,8 +54,6 @@ def free_bacon(score):
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
     # END PROBLEM 2
-    if score == 0:
-        return 6
     pi = pi // pow(10,100-score)
 #    if score == 0:
 #        return 6
@@ -190,12 +188,14 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
             while True and score0 < goal:
                 num_rolls = strategy0(score0,score1)
                 score0 += take_turn(num_rolls, score1, dice)
+                say = say(score0,score1)
                 if not extra_turn(score0, score1):
                     break
         else:
             while True and score1 < goal:
                 num_rolls = strategy1(score1,score0)
                 score1 += take_turn(num_rolls,score0,dice)
+                say = say(score0,score1)
                 if not extra_turn(score1,score0):
                     break
         who = other(who)
@@ -290,6 +290,20 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    def say(score0,score1):
+        if who == 0:
+            increase = score0 - last_score
+            if increase > running_high:
+                print(increase,"point(s)! The most yet for Player 0")
+                return announce_highest(who,score0,increase)
+            return announce_highest(who,score0,running_high)
+        else:
+            increase = score1 - last_score
+            if increase > running_high:
+                print(increase,"point(s)! The most yet for Player 1")
+                return announce_highest(who,score1,increase) 
+            return announce_highest(who,score1,running_high)
+    return say
     # END PROBLEM 7
 
 
